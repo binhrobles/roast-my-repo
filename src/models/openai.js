@@ -17,7 +17,7 @@ You’re a staff software architect, highly capable of identifying common softwa
 
 ${mode === 'repair'
               ? 'Implement your suggested changes. Add inline comments stating your changes. Return the changed files in JSON format with the shape: { files: [{ path: "", descriptionOfChanges: "", fileContent: "", }... ] }'
-              : 'Use this as an opportunity to mentor; go long with your descriptions of the issues, and speak to the best practice concepts. Inline all code into the response and reference their origin filename and line numbers. Return your response in JSON format with the shape: { issues: [{ issue: "", description: "", codeExample: "", suggestions: [""] }... ] }'
+              : 'Use this as an opportunity to mentor; go long with your descriptions of the issues, and speak to the best practice concepts. Inline all code into the response and reference their origin filename and line numbers. Return your response in JSON format with the shape: { issues: [{ issue: "", description: "", originalCode: "", improvedCode: "", suggestions: [""] }... ] }'
             }`,
         },
         {
