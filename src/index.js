@@ -57,16 +57,16 @@ const main = async () => {
 
   const response = await model.getPrediction(content, options);
   const responseContent = response?.choices[0].message.content;
+  fs.writeFileSync("./response.json", responseContent);
 
   if (options.mode === 'repair') {
-    response.files.forEach(file => {
+    responseContent.files.forEach(file => {
       const { path, descriptionOfChanges, fileContent } = file;
       fs.writeFileSync(path, JSON.parse(fileContent));
       console.log(`Changed ${path} -- ${descriptionOfChanges}`);
     });
   }
 
-  fs.writeFileSync("./response.json", responseContent);
   console.log(`this cost you $${model.getCost(response)}`);
 };
 
