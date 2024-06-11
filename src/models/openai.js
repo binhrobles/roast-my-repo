@@ -1,9 +1,23 @@
 import OpenAI from "openai";
 
-export const getPrediction = async (content, options = {}) => {
+const getPrediction = async (content, options = {}) => {
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const { mode } = options;
   console.log(`mode: ${mode} -- reading through your code...`);
+
+  const systemPrompt = {
+    repair: `You are a staff software architect, highly capable of identifying common software and design anti-patterns. Given the following repo, identify any software architecture anti-patterns or violations of software, language, or framework-specific best practices.
+
+Implement your suggested changes. Add to comments the code itself stating your changes.
+
+Return your response in JSON format with the shape: { files: [{ path: "", descriptionOfChanges: "", fileContent: "" }... ] }`,
+
+    roast: `You are a staff software architect, highly capable of identifying common software and design anti-patterns. Given the following repo, identify if this repo is at risk of using any software architecture anti-patterns or not following language or framework-specific idiomatic best practices.
+
+Don’t give general advice, keep it tailored for this codebase. Use this as an opportunity to mentor; go long with your descriptions of the issues, and speak to the best practice concepts.
+
+Return your response in JSON format with the shape: { issues: [{ issue: "", description: "", originalCode: codeObject, improvedCode: codeObject, suggestions: [""] }... ] } where codeObject is an object of shape { filename: "", lineNumbers: "", code: "" }`
+  }[mode];
 
   try {
     const response = await openai.chat.completions.create({
@@ -12,13 +26,7 @@ export const getPrediction = async (content, options = {}) => {
       messages: [
         {
           role: "system",
-          content: `
-You’re a staff software architect, highly capable of identifying common software and design anti-patterns. Given the following repo, identify if this repo is at risk of using any software architecture anti-patterns, not following general software design best practices, or not following language or framework-specific idiomatic best practices. Don’t give general advice, keep it tailored for this codebase.
-
-${mode === 'repair'
-              ? 'Implement your suggested changes. Add inline comments stating your changes. Return the changed files in JSON format with the shape: { files: [{ path: "", descriptionOfChanges: "", fileContent: "", }... ] }'
-              : 'Use this as an opportunity to mentor; go long with your descriptions of the issues, and speak to the best practice concepts. Inline all code into the response and reference their origin filename and line numbers. Return your response in JSON format with the shape: { issues: [{ issue: "", description: "", originalCode: "", improvedCode: "", suggestions: [""] }... ] }'
-            }`,
+          content: systemPrompt,
         },
         {
           role: "user",
