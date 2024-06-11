@@ -16,8 +16,8 @@ export const getPrediction = async (content, options = {}) => {
 You’re a staff software architect, highly capable of identifying common software and design anti-patterns. Given the following repo, identify if this repo is at risk of using any software architecture anti-patterns, not following general software design best practices, or not following language or framework-specific idiomatic best practices. Don’t give general advice, keep it tailored for this codebase.
 
 ${mode === 'repair'
-              ? 'Implement your suggested changes. Return the changed files in JSON format with the shape: { files: [{ path: "", descriptionOfChanges: "", fileContent: "", }... ] }'
-              : 'Use this as an opportunity to mentor; go long with your descriptions of the issues, and speak to the best practice concepts. Inline all code references with filenames and line numbers. Return your response in JSON format with the shape: { issues: [{ issue: "", description: "", codeExample: "", suggestions: [""] }... ] }'
+              ? 'Implement your suggested changes. Add inline comments stating your changes. Return the changed files in JSON format with the shape: { files: [{ path: "", descriptionOfChanges: "", fileContent: "", }... ] }'
+              : 'Use this as an opportunity to mentor; go long with your descriptions of the issues, and speak to the best practice concepts. Inline all code into the response and reference their origin filename and line numbers. Return your response in JSON format with the shape: { issues: [{ issue: "", description: "", codeExample: "", suggestions: [""] }... ] }'
             }`,
         },
         {
