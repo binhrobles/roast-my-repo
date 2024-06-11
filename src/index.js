@@ -2,6 +2,7 @@ import "dotenv/config";
 import dirTree from "directory-tree";
 import fs from "fs/promises"; // Use promise-based fs
 import inquirer from "inquirer";
+
 import openai from "./models/openai.js";
 
 const rip_tree = async (dir) => { // Made the function async
@@ -72,6 +73,12 @@ const main = async () => {
         await fs.writeFile(path, fileContent, 'utf8'); // Write file asynchronously with encoding
         console.log(`Changed ${path} -- ${descriptionOfChanges}`);
       }
+    }
+
+    if (options.mode === 'roast') {
+        const responseObject = JSON.parse(responseContent);
+        await fs.writeFile('roast.html', responseObject.html, 'utf8');
+        console.log(`Open roast.html`);
     }
   } catch (error) {
     console.error("An error occurred:", error); // General error handling

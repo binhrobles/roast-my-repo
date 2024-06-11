@@ -16,7 +16,7 @@ Return your response in JSON format with the shape: { files: [{ path: "", descri
 
 Don’t give general advice, keep it tailored for this codebase. Use this as an opportunity to mentor; go long with your descriptions of the issues, and speak to the best practice concepts.
 
-Return your response in JSON format with the shape: { issues: [{ issue: "", description: "", originalCode: codeObject, improvedCode: codeObject, suggestions: [""] }... ] } where codeObject is an object of shape { filename: "", lineNumbers: "", code: "" }`
+Return your response in JSON format with the shape: { html: "" }. Use expressive html and include code examples as much as possible.`
   }[mode];
 
   try {
