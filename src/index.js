@@ -64,7 +64,7 @@ const main = async () => {
     const responseObject = JSON.parse(responseContent);
     responseObject.files.forEach(file => {
       const { path, descriptionOfChanges, fileContent } = file;
-      fs.writeFileSync(path, JSON.parse(fileContent));
+      fs.writeFileSync(path, fileContent);
       console.log(`Changed ${path} -- ${descriptionOfChanges}`);
     });
   }
