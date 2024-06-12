@@ -44,13 +44,18 @@ const main = async () => {
             { name: "make some edits", value: "repair" },
           ],
         },
+        {
+          type: "input",
+          name: "user_input",
+          message: "Anything in particular you want me to look at? (leave blank for general comments)",
+        }
       ]);
 
     const tree = dirTree(repo);
     const content = await rip_tree(tree);
     await fs.writeFile("./unified-project.md", content, 'utf8'); // Write file asynchronously with encoding
 
-    const costEstimate = model.estimateCost(content);
+    const costEstimate = model.estimateCost(content + options.user_input);
     const { confirm_cost } = await inquirer.prompt({
       name: "confirm_cost",
       type: "confirm",
@@ -76,9 +81,9 @@ const main = async () => {
     }
 
     if (options.mode === 'roast') {
-        const responseObject = JSON.parse(responseContent);
-        await fs.writeFile('roast.html', responseObject.html, 'utf8');
-        console.log(`Open roast.html`);
+      const responseObject = JSON.parse(responseContent);
+      await fs.writeFile('roast.html', responseObject.html, 'utf8');
+      console.log(`Open roast.html`);
     }
   } catch (error) {
     console.error("An error occurred:", error); // General error handling

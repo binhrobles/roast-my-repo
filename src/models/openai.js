@@ -2,13 +2,15 @@ import OpenAI from "openai";
 
 const getPrediction = async (content, options = {}) => {
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-  const { mode } = options;
-  console.log(`mode: ${mode} -- reading through your code...`);
+  const { mode, user_input } = options;
+  console.log(`mode: ${mode} user_input: ${user_input} -- reading through your code...`);
 
   const systemPrompt = {
     repair: `You are a staff software architect, highly capable of identifying common software and design anti-patterns. Given the following repo, identify any software architecture anti-patterns or violations of software, language, or framework-specific best practices.
 
 Implement your suggested changes. Add to comments the code itself stating your changes.
+
+Here is the code author's request: ${user_input}
 
 Return your response in JSON format with the shape: { files: [{ path: "", descriptionOfChanges: "", fileContent: "" }... ] }`,
 
@@ -17,6 +19,8 @@ Return your response in JSON format with the shape: { files: [{ path: "", descri
 Avoid nit-picking things like configuration management, environment variable management, and error handling practices unless they are egregious and a widespread pattern throughout the codebase.
 
 Don’t give general advice, keep it tailored for this codebase. Use this as an opportunity to mentor; go long with your descriptions of the issues, and speak to the higher level, best practice concepts (including but not limited to: the single responsibility principle, open-closed principle, dependency inversion, and the stable abstraction principle)
+
+Here is the code author's request: ${user_input}
 
 Return your response in JSON format with the shape: { html: "" }. Use expressive html and include code examples as much as possible.`
   }[mode];
